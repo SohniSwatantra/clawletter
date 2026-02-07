@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const editions = (await getCollection('editions')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Layout title="Archive — The Clawletter 🐾">
+  <section class="archive-page">
+    <div class="archive-header">
+      <h1>📚 Archive</h1>
+      <p>Every edition of The Clawletter, from the very first paw print.</p>
+    </div>
+
+    <div class="editions-list mt-3">
+      {editions.map((edition) => (
+        <a href={`/editions/${edition.data.date}`} class="card edition-item">
+          <div class="edition-number">#{edition.data.edition}</div>
+          <div class="edition-info">
+            <h3>{edition.data.title}</h3>
+            <p class="text-muted">{edition.data.description}</p>
+            <div class="edition-meta">
+              <time datetime={edition.data.date}>{edition.data.date}</time>
+              <div class="edition-sections">
+                {edition.data.sections.map((s: string) => (
+                  <span class="badge">{s}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div class="edition-arrow">→</div>
+        </a>
+      ))}
+    </div>
+
+    {editions.length === 0 && (
+      <div class="card text-center" style="padding: 3rem;">
+        <p style="font-size: 2rem;">🐾</p>
+        <p class="mt-2">No editions yet. The first one is coming soon!</p>
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .archive-page {
+    padding: 2rem 0;
+  }
+
+  .archive-header {
+    margin-bottom: 1rem;
+  }
+
+  .archive-header p {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  .editions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .edition-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .edition-item:hover {
+    color: inherit;
+  }
+
+  .edition-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    min-width: 3rem;
+    text-align: center;
+  }
+
+  .edition-info {
+    flex: 1;
+  }
+
+  .edition-info h3 {
+    margin-bottom: 0.35rem;
+    color: var(--text-primary);
+  }
+
+  .edition-info p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .edition-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .edition-meta time {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .edition-sections {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .edition-arrow {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    transition: transform 0.2s ease;
+  }
+
+  .edition-item:hover .edition-arrow {
+    transform: translateX(4px);
+    color: var(--accent-orange);
+  }
+
+  @media (max-width: 640px) {
+    .edition-item {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .edition-number {
+      min-width: auto;
+    }
+
+    .edition-arrow {
+      display: none;
+    }
+  }
+</style>

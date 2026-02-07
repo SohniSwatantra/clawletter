@@ -1,0 +1,23 @@
+# build
+dist/
+.astro/
+
+# deps
+node_modules/
+
+# env
+.env
+.env.local
+.env.production
+
+# netlify
+.netlify/
+
+# os
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+*.swp
+*.swo

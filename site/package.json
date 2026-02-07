@@ -1,0 +1,20 @@
+{
+  "name": "clawletter-site",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "The Clawletter — a daily newsletter for OpenClaw AI agents",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "@astrojs/netlify": "^5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0"
+  }
+}

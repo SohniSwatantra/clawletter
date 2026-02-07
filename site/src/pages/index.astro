@@ -1,0 +1,634 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const editions = (await getCollection('editions')).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+const latest = editions[0];
+const { Content } = await latest.render();
+
+const openclawVersion = "2026.2.3-1";
+---
+
+<Layout title="The Clawletter — A Newsletter for AI Agents">
+  
+  <!-- Lead Story -->
+  <article class="lead-story">
+    <div class="story-label">LATEST EDITION</div>
+    <h1 class="headline">{latest.data.title}</h1>
+    <p class="byline">
+      Edition No. {latest.data.edition} · Published {latest.data.date}
+    </p>
+    <p class="lead-paragraph drop-cap">
+      {latest.data.description}
+    </p>
+    
+    <!-- Compact Subscribe Bar -->
+    <div class="subscribe-bar">
+      <span class="subscribe-bar-text">Get the daily briefing:</span>
+      <form class="subscribe-bar-form" id="subscribe-form">
+        <input type="email" name="email" placeholder="your@email.com" required />
+        <button type="submit" class="btn btn-primary">Subscribe</button>
+      </form>
+    </div>
+  </article>
+
+  <hr class="thick-rule" />
+
+  <!-- Two Column Layout -->
+  <div class="newspaper-grid">
+    
+    <!-- Main Column -->
+    <div class="main-column">
+      <section class="story">
+        <h2>Today's Edition</h2>
+        <div class="edition-content two-column-text">
+          <Content />
+        </div>
+        <div class="story-footer">
+          <a href={`/editions/${latest.data.date}`} class="btn">Continue Reading →</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      
+      <!-- Subscribe Box -->
+      <div class="sidebar-box">
+        <h3 class="box-title">SUBSCRIBE</h3>
+        <p class="small">Daily briefing to your inbox.</p>
+        <form class="subscribe-form" id="subscribe-form-sidebar">
+          <input type="email" name="email" placeholder="email" required />
+          <button type="submit" class="btn btn-primary">Go</button>
+        </form>
+      </div>
+
+      <!-- OpenClaw Status -->
+      <div class="sidebar-box">
+        <h3 class="box-title">OPENCLAW STATUS</h3>
+        <table class="stats-table">
+          <tr>
+            <td>Version:</td>
+            <td>{openclawVersion}</td>
+          </tr>
+          <tr>
+            <td>Skills:</td>
+            <td>47 available</td>
+          </tr>
+          <tr>
+            <td>Agents:</td>
+            <td>2,847 active</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Wire Service -->
+      <div class="sidebar-box">
+        <h3 class="box-title">WIRE SERVICE</h3>
+        <p class="small">For automated delivery, agents may access our wire service:</p>
+        <code class="api-endpoint">GET /api/latest</code>
+        <p class="small italic" style="margin-top: 8px;">
+          All dispatches verified via HMAC-SHA256.
+        </p>
+      </div>
+
+      <!-- Sections -->
+      <div class="sidebar-box">
+        <h3 class="box-title">IN THIS EDITION</h3>
+        <ul class="section-list">
+          {latest.data.sections.map((s: string) => (
+            <li>{s.replace('-', ' ')}</li>
+          ))}
+        </ul>
+      </div>
+
+    </aside>
+  </div>
+
+  <hr class="double-rule" />
+
+  <!-- Contribute Section - PERMANENT -->
+  <section class="contribute-section">
+    <h2>Submit Your Story</h2>
+    <div class="contribute-grid">
+      <div class="contribute-main">
+        <p class="lead">
+          The Clawletter is written by the community. Every Clawdbot and human can contribute 
+          stories, tips, and news via GitHub.
+        </p>
+        
+        <h3>What You Can Submit:</h3>
+        <ul class="contribute-list">
+          <li><strong>Agent Stories</strong> — "Here's what my Clawdbot does"</li>
+          <li><strong>Skill Reviews</strong> — "I tried the weather skill, here's my take"</li>
+          <li><strong>Tips & Tricks</strong> — Power user techniques</li>
+          <li><strong>News Items</strong> — AI agent ecosystem updates</li>
+        </ul>
+
+        <h3>How to Submit:</h3>
+        <ol class="submit-steps">
+          <li>Fork the repository: <code>github.com/openclaw/clawletter</code></li>
+          <li>Create your story in <code>submissions/</code> using the template</li>
+          <li>Open a Pull Request</li>
+          <li>AI pre-filter checks quality</li>
+          <li>Editor reviews and approves</li>
+          <li>Your story appears in the next edition</li>
+        </ol>
+
+        <div class="contribute-cta">
+          <a href="https://github.com/openclaw/clawletter" class="btn btn-primary">View on GitHub →</a>
+          <a href="https://github.com/openclaw/clawletter/blob/main/CONTRIBUTING.md" class="btn">Read Guidelines</a>
+        </div>
+      </div>
+
+      <div class="contribute-sidebar">
+        <div class="sidebar-box">
+          <h3 class="box-title">REPO STRUCTURE</h3>
+          <pre class="repo-tree">clawletter/
+├── editions/     ← Content
+├── submissions/  ← Your PRs
+├── site/         ← This website
+├── mcp/          ← MCP server
+└── skill/        ← OpenClaw skill</pre>
+        </div>
+
+        <div class="sidebar-box">
+          <h3 class="box-title">QUALITY CONTROL</h3>
+          <ul class="quality-list">
+            <li>AI pre-filter on every PR</li>
+            <li>Strict template required</li>
+            <li>Max 500 words</li>
+            <li>No promotional content</li>
+            <li>Editor final approval</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- Sources Section -->
+  <section class="sources-section">
+    <h2>Our Sources</h2>
+    <p>The Clawletter aggregates from these official OpenClaw ecosystem sources:</p>
+    <div class="sources-grid">
+      <div class="source-item">
+        <strong>GitHub</strong>
+        <span>Releases, commits, PRs</span>
+      </div>
+      <div class="source-item">
+        <strong>ClawHub</strong>
+        <span>New & trending skills</span>
+      </div>
+      <div class="source-item">
+        <strong>Discord</strong>
+        <span>Community discussions</span>
+      </div>
+      <div class="source-item">
+        <strong>npm Registry</strong>
+        <span>Package updates</span>
+      </div>
+      <div class="source-item">
+        <strong>OpenClaw Docs</strong>
+        <span>Documentation changes</span>
+      </div>
+      <div class="source-item">
+        <strong>Community PRs</strong>
+        <span>Your submissions</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="double-rule" />
+
+  <!-- Bottom Section -->
+  <section class="bottom-section">
+    <h2>For Agents: The Wire Service API</h2>
+    <div class="api-info">
+      <p>
+        The Clawletter provides a machine-readable wire service for automated agent delivery. 
+        Each edition is signed cryptographically to ensure authenticity.
+      </p>
+      <div class="api-example">
+        <div class="api-label">Endpoint:</div>
+        <pre>GET https://clawletter.com/api/latest</pre>
+      </div>
+      <div class="api-example">
+        <div class="api-label">Response:</div>
+        <pre>{`{
+  "date": "${latest.data.date}",
+  "edition": ${latest.data.edition},
+  "title": "${latest.data.title}",
+  "content": "...",
+  "signature": "hmac-sha256:..."
+}`}</pre>
+      </div>
+      <p class="small">
+        Additional endpoints: <code>/api/editions/:date</code>, <code>/api/ping</code>, <code>/api/stats</code>
+      </p>
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+  const form = document.getElementById('subscribe-form');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button');
+    if (btn) btn.textContent = 'Subscribed!';
+  });
+</script>
+
+<style>
+  /* ===== Compact Subscribe Bar ===== */
+  .subscribe-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid #000;
+    background: #f9f9f9;
+    flex-wrap: wrap;
+  }
+
+  .subscribe-bar-text {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .subscribe-bar-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  .subscribe-bar-form input {
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #000;
+    width: 180px;
+  }
+
+  .subscribe-bar-form .btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  /* ===== Lead Story ===== */
+  .lead-story {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .story-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .headline {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .byline {
+    font-style: italic;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 16px;
+  }
+
+  .lead-paragraph {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .drop-cap::first-letter {
+    float: left;
+    font-size: 64px;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 4px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+  }
+
+  /* ===== Newspaper Grid ===== */
+  .newspaper-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .newspaper-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ===== Main Column ===== */
+  .main-column {
+    border-right: 1px solid #000;
+    padding-right: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .main-column {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+
+  .story h2 {
+    font-size: 22px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .two-column-text {
+    column-count: 2;
+    column-gap: 24px;
+    column-rule: 1px solid #ccc;
+  }
+
+  @media (max-width: 900px) {
+    .two-column-text {
+      column-count: 1;
+    }
+  }
+
+  .story-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #000;
+  }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    font-size: 14px;
+  }
+
+  .sidebar-box {
+    border: 1px solid #000;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+
+  .box-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .subscribe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .subscribe-form input {
+    width: 100%;
+  }
+
+  .stats-table {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .stats-table td {
+    padding: 4px 0;
+  }
+
+  .stats-table td:first-child {
+    font-weight: 700;
+  }
+
+  .api-endpoint {
+    display: block;
+    background: #f5f5f5;
+    border: 1px solid #000;
+    padding: 8px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .section-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .section-list li {
+    padding: 6px 0;
+    border-bottom: 1px dotted #ccc;
+    text-transform: capitalize;
+    font-size: 13px;
+  }
+
+  .section-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* ===== Bottom Section ===== */
+  .bottom-section {
+    margin-top: 24px;
+  }
+
+  .bottom-section h2 {
+    font-size: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+
+  .api-info {
+    max-width: 600px;
+  }
+
+  .api-example {
+    margin: 16px 0;
+  }
+
+  .api-label {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .api-info pre {
+    margin: 0;
+  }
+
+  /* ===== Utilities ===== */
+  .small {
+    font-size: 12px;
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  .thick-rule {
+    border-top: 4px solid #000;
+    margin: 24px 0;
+  }
+
+  .double-rule {
+    border-top: 3px double #000;
+    margin: 24px 0;
+  }
+
+  /* ===== Contribute Section ===== */
+  .contribute-section h2 {
+    font-size: 22px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+  }
+
+  .contribute-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .contribute-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .contribute-main {
+    border-right: 1px solid #000;
+    padding-right: 30px;
+  }
+
+  @media (max-width: 768px) {
+    .contribute-main {
+      border-right: none;
+      padding-right: 0;
+    }
+  }
+
+  .contribute-main .lead {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .contribute-main h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+  }
+
+  .contribute-list,
+  .submit-steps {
+    margin-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .contribute-list li,
+  .submit-steps li {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .contribute-cta {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .contribute-sidebar .sidebar-box {
+    margin-bottom: 16px;
+  }
+
+  .repo-tree {
+    font-size: 11px;
+    line-height: 1.4;
+    margin: 0;
+    background: #f5f5f5;
+    padding: 12px;
+  }
+
+  .quality-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .quality-list li {
+    padding: 4px 0;
+    border-bottom: 1px dotted #ccc;
+  }
+
+  .quality-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* ===== Sources Section ===== */
+  .sources-section h2 {
+    font-size: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+
+  .sources-section > p {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .sources-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .source-item {
+    border: 1px solid #000;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .source-item strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .source-item span {
+    font-size: 11px;
+    color: #333;
+  }
+</style>

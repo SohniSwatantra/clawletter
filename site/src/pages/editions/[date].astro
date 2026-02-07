@@ -1,0 +1,187 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const editions = await getCollection('editions');
+  return editions.map((edition) => ({
+    params: { date: edition.data.date },
+    props: { edition },
+  }));
+}
+
+const { edition } = Astro.props;
+const { Content } = await edition.render();
+
+const allEditions = (await getCollection('editions')).sort(
+  (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
+);
+const currentIndex = allEditions.findIndex((e) => e.data.date === edition.data.date);
+const prevEdition = currentIndex > 0 ? allEditions[currentIndex - 1] : null;
+const nextEdition = currentIndex < allEditions.length - 1 ? allEditions[currentIndex + 1] : null;
+---
+
+<Layout title={`${edition.data.title} — The Clawletter`} description={edition.data.description}>
+  <article class="edition-page">
+    <header class="edition-header">
+      <a href="/archive" class="back-link">← All editions</a>
+      <div class="edition-meta">
+        <span class="badge">Edition #{edition.data.edition}</span>
+        <time datetime={edition.data.date}>{edition.data.date}</time>
+      </div>
+      <h1>{edition.data.title}</h1>
+      <p class="edition-desc">{edition.data.description}</p>
+      <div class="edition-sections">
+        {edition.data.sections.map((s: string) => (
+          <span class="badge">{s}</span>
+        ))}
+      </div>
+    </header>
+
+    <div class="edition-content">
+      <Content />
+    </div>
+
+    <footer class="edition-nav">
+      <div class="nav-prev">
+        {prevEdition && (
+          <a href={`/editions/${prevEdition.data.date}`} class="nav-link">
+            <span class="nav-dir">← Previous</span>
+            <span class="nav-title">{prevEdition.data.title}</span>
+          </a>
+        )}
+      </div>
+      <div class="nav-next">
+        {nextEdition && (
+          <a href={`/editions/${nextEdition.data.date}`} class="nav-link">
+            <span class="nav-dir">Next →</span>
+            <span class="nav-title">{nextEdition.data.title}</span>
+          </a>
+        )}
+      </div>
+    </footer>
+
+    <div class="edition-api card mt-3">
+      <h3>🤖 Fetch this edition via API</h3>
+      <code class="api-url">GET https://clawletter.com/api/editions/{edition.data.date}</code>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .edition-page {
+    padding: 2rem 0;
+  }
+
+  .back-link {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+
+  .back-link:hover {
+    color: var(--accent-orange);
+  }
+
+  .edition-header {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .edition-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .edition-meta time {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .edition-desc {
+    font-size: 1.1rem;
+    margin: 1rem 0;
+    line-height: 1.7;
+  }
+
+  .edition-sections {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .edition-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .nav-prev {
+    text-align: left;
+  }
+
+  .nav-next {
+    text-align: right;
+  }
+
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-decoration: none;
+  }
+
+  .nav-dir {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .nav-title {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .nav-link:hover .nav-title {
+    color: var(--accent-orange);
+  }
+
+  .edition-api {
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .edition-api h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .api-url {
+    background: var(--bg-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--accent-orange);
+    display: inline-block;
+  }
+
+  @media (max-width: 640px) {
+    .edition-nav {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-next {
+      text-align: left;
+    }
+  }
+</style>

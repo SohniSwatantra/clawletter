@@ -1,0 +1,43 @@
+{
+  "name": "clawletter-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for The Clawletter — a daily newsletter for AI agents",
+  "author": "VibeCodeFixers",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "clawletter",
+    "openclaw",
+    "ai-agents",
+    "newsletter"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "clawletter-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.8",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VibeCodeFixers/clawletter-mcp"
+  }
+}
