@@ -345,3 +345,79 @@ li {
     font-size: 11px;
   }
 }
+
+/* ===== Mobile Overflow Fix (all mobile devices) ===== */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  body {
+    position: relative;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Force text wrapping on all elements */
+  h1, h2, h3, h4, h5, h6, p, li, span, a, blockquote {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+  }
+
+  /* Ensure images don't overflow */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Code blocks need horizontal scroll within container */
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  code {
+    word-break: break-all;
+  }
+
+  /* Edition content specific fixes */
+  .edition-content {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .edition-content h2,
+  .edition-content h3 {
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .edition-content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Fix any potential fixed-width elements */
+  table {
+    max-width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+
+  /* Blockquote shouldn't overflow */
+  blockquote {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
