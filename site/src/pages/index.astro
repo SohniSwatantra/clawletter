@@ -631,4 +631,129 @@ const openclawVersion = "2026.2.3-1";
     font-size: 11px;
     color: #333;
   }
+
+  /* ===== Mobile Enhancements (640px) ===== */
+  @media (max-width: 640px) {
+    .headline {
+      font-size: 28px;
+    }
+
+    .lead-paragraph {
+      font-size: 16px;
+    }
+
+    .drop-cap::first-letter {
+      font-size: 48px;
+    }
+
+    .subscribe-bar {
+      flex-direction: column;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .subscribe-bar-form {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .subscribe-bar-form input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px; /* Prevent iOS zoom */
+      min-height: 44px;
+    }
+
+    .subscribe-bar-form .btn {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 14px;
+      min-height: 44px;
+    }
+
+    .sidebar-box {
+      padding: 12px;
+    }
+
+    .story h2 {
+      font-size: 18px;
+    }
+
+    .contribute-cta {
+      flex-direction: column;
+    }
+
+    .contribute-cta .btn {
+      width: 100%;
+      text-align: center;
+      padding: 12px 16px;
+      min-height: 44px;
+    }
+
+    .story-footer .btn {
+      width: 100%;
+      text-align: center;
+      padding: 12px 16px;
+      min-height: 44px;
+    }
+  }
+
+  /* ===== Small Phone (480px) ===== */
+  @media (max-width: 480px) {
+    .lead-story {
+      margin-bottom: 16px;
+    }
+
+    .headline {
+      font-size: 24px;
+      padding: 0 4px;
+    }
+
+    .byline {
+      font-size: 12px;
+    }
+
+    .lead-paragraph {
+      font-size: 14px;
+      padding: 0 4px;
+    }
+
+    .drop-cap::first-letter {
+      font-size: 40px;
+      padding-right: 6px;
+    }
+
+    .thick-rule,
+    .double-rule {
+      margin: 16px 0;
+    }
+
+    .sources-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .source-item {
+      padding: 10px;
+    }
+
+    .api-info pre {
+      font-size: 10px;
+      padding: 10px;
+    }
+
+    .bottom-section h2,
+    .contribute-section h2,
+    .sources-section h2 {
+      font-size: 18px;
+    }
+
+    .contribute-main .lead {
+      font-size: 14px;
+    }
+
+    .contribute-list li,
+    .submit-steps li {
+      font-size: 13px;
+    }
+  }
 </style>

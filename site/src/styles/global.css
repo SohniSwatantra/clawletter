@@ -261,3 +261,87 @@ li {
     font-size: 28px;
   }
 }
+
+/* ===== Mobile-Friendly Enhancements ===== */
+
+/* Touch-friendly buttons and inputs (640px and below) */
+@media (max-width: 640px) {
+  .btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 44px; /* Apple HIG touch target */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  input[type="email"],
+  input[type="text"] {
+    padding: 12px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    min-height: 44px;
+  }
+
+  pre, code {
+    font-size: 11px;
+    word-break: break-word;
+  }
+
+  .edition-content p {
+    text-align: left; /* Justified text hard to read on mobile */
+    hyphens: none;
+  }
+}
+
+/* Small phones (480px and below) */
+@media (max-width: 480px) {
+  html {
+    font-size: 15px;
+  }
+
+  main {
+    padding: 0 12px 24px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 14px;
+    text-align: left; /* No justify on small screens */
+  }
+
+  /* Smaller drop cap on mobile */
+  .drop-cap::first-letter {
+    font-size: 48px;
+  }
+
+  /* Code blocks scroll horizontally */
+  pre {
+    padding: 12px;
+    font-size: 10px;
+  }
+
+  code {
+    font-size: 11px;
+  }
+
+  /* Cards need less padding */
+  .card {
+    padding: 12px;
+  }
+
+  /* Utility adjustments */
+  .small {
+    font-size: 11px;
+  }
+}

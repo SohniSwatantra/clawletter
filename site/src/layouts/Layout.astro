@@ -287,5 +287,100 @@ const today = new Date().toLocaleDateString('en-US', {
     .masthead-owl {
       font-size: 36px;
     }
+
+    .masthead-nav {
+      padding: 12px 0;
+    }
+
+    .masthead-nav a {
+      font-size: 12px;
+      padding: 8px 4px; /* Larger touch targets */
+    }
+
+    .nav-divider {
+      margin: 0 8px;
+    }
+  }
+
+  /* ===== Small Phone Enhancements (480px) ===== */
+  @media (max-width: 480px) {
+    .masthead {
+      padding: 0 12px;
+    }
+
+    .masthead-title {
+      font-size: 28px;
+      letter-spacing: -0.5px;
+    }
+
+    .masthead-owl {
+      font-size: 28px;
+      margin-bottom: 4px;
+    }
+
+    .masthead-tagline {
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      padding: 0 8px;
+    }
+
+    .masthead-paws {
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .masthead-date {
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 6px 0;
+    }
+
+    .masthead-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .masthead-nav a {
+      font-size: 11px;
+      padding: 10px 8px; /* 44px touch target */
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-divider {
+      display: none; /* Hide dividers, use gap instead */
+    }
+
+    .masthead-bottom-rule {
+      margin-bottom: 16px;
+    }
+
+    /* Footer mobile */
+    .newspaper-footer {
+      padding: 0 12px 24px;
+      margin-top: 24px;
+    }
+
+    .footer-paws {
+      font-size: 14px;
+      letter-spacing: 4px;
+    }
+
+    .footer-text {
+      font-size: 13px;
+    }
+
+    .footer-small {
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .footer-owl {
+      font-size: 20px;
+      margin-top: 12px;
+    }
   }
 </style>
